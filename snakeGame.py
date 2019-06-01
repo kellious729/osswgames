@@ -184,6 +184,4 @@ while True:
     showScore()
     pygame.display.flip()
     fpsController.tick(x)
-
-
     
