@@ -48,7 +48,9 @@ snakePos=[100,50]
 snakeBody=[[100,50],[90,50],[80,50]]
 
 foodPos=[random.randrange(1,72)*10,random.randrange(1,46)*10]
+foodPos1=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodSpawn=True
+foodSpawn1=True
 
 direction = 'RIGHT'
 changeto = direction
@@ -125,20 +127,37 @@ while True:
         x+=1
         score+=1
         foodSpawn=False
+
+    elif snakePos[0]==foodPos1[0] and snakePos[1]==foodPos1[1]:
+        pygame.mixer.Sound.play(snakebit_sound)
+        x-=1
+        score+=1
+        foodSpawn1=False
+        
     else:
         snakeBody.pop()
+        
     # food Eating
     if foodSpawn == False:
         foodPos = [random.randrange(1,72)*10,random.randrange(1,46)*10]
     foodSpawn = True
+
+    if foodSpawn1 == False:
+        foodPos1 = [random.randrange(1,72)*10,random.randrange(1,46)*10]
+    foodSpawn1 = True
    
     #Draw Snake
-    play_surface.fill(green)
+    play_surface.fill(white)
     for pos in snakeBody:
-        pygame.draw.rect(play_surface,brown, pygame.Rect(pos[0],pos[1],10,10))
+        pygame.draw.rect(play_surface,blue, pygame.Rect(pos[0],pos[1],10,10))
         
     # Draw Food
     pygame.draw.rect(play_surface,red, pygame.Rect(foodPos[0],foodPos[1],10,10))
+         
+    # Draw Food
+    pygame.draw.rect(play_surface,green, pygame.Rect(foodPos1[0],foodPos1[1],10,10))
+    
+    
     
     
     # Boundry
@@ -165,14 +184,6 @@ while True:
     showScore()
     pygame.display.flip()
     fpsController.tick(x)
-        
+
+
     
-                
-                
-                
-                
-                
-                
-
-
-
