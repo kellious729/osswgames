@@ -27,18 +27,6 @@ def inside(head):
     "Return True if head inside boundaries."
     return -200 < head.x < 190 and -200 < head.y < 190
 
-
-def speed(length,i):
-    if length%3 == 0:
-        if(i >= 60):
-            i=i-20
-            return i
-        else :
-            return i
-    else :
-        return i
-
-
 def move():
     "Move snake forward one segment."
     head = snake[-1].copy()
@@ -89,10 +77,6 @@ def move():
         spd = 100
     
     ontimer(move, spd)
-
-
-
-
 
 setup(420, 420, 370, 0)
 hideturtle()
