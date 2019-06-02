@@ -16,7 +16,7 @@ else:
 crash_sound=pygame.mixer.Sound("Collision.wav")
 snakebit_sound=pygame.mixer.Sound('snakehiss2.wav')
 gameover_sound=pygame.mixer.Sound('gameover.wav')
-pygame.mixer.music.load('Snack_Time.mp3')
+pygame.mixer.music.load('asd.mp3')
 
 #Background music
 pygame.mixer.music.play(-1)
@@ -39,7 +39,8 @@ black=pygame.Color(0,0,0)       #Score
 white=pygame.Color(255,255,255) #Background
 brown=pygame.Color(165,42,42)   #Food
 blue=pygame.Color(0,0,204)      #Background
-yellow=pygame. Color(255,255,0)
+yellow=pygame.Color(255,255,0)
+purple=pygame.Color(128,0,128)
 
 # FPS Controller
 fpsController=pygame.time.Clock()
@@ -51,9 +52,11 @@ snakeBody=[[100,50],[90,50],[80,50]]
 foodPos=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodPos1=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodPos2=[random.randrange(1,72)*10,random.randrange(1,46)*10]
+foodPos3=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodSpawn=True
 foodSpawn1=True
 foodSpawn2=True
+foodSpawn3=True
 
 direction = 'RIGHT'
 changeto = direction
@@ -142,6 +145,11 @@ while True:
         score+=2
         foodSpawn2=False
         
+    elif snakePos[0]==foodPos3[0] and snakePos[1]==foodPos3[1]:
+        pygame.mixer.Sound.play(snakebit_sound)
+        score-=2
+        foodSpawn3=False
+        
     else:
         snakeBody.pop()
         
@@ -157,7 +165,11 @@ while True:
     if foodSpawn2 == False:
         foodPos2 = [random.randrange(1,72)*10,random.randrange(1,46)*10]
     foodSpawn2 = True
-   
+
+    if foodSpawn3 == False:
+        foodPos3 = [random.randrange(1,72)*10,random.randrange(1,46)*10]
+    foodSpawn3 = True
+    
     #Draw Snake
     play_surface.fill(white)
     for pos in snakeBody:
@@ -171,6 +183,9 @@ while True:
 
     # Draw Food
     pygame.draw.rect(play_surface,black, pygame.Rect(foodPos2[0],foodPos2[1],10,10))
+
+    # Draw Food
+    pygame.draw.rect(play_surface,purple, pygame.Rect(foodPos3[0],foodPos3[1],10,10))
     
     
     
