@@ -106,13 +106,13 @@ while True:
                 changeto='UP'
             if(event.key==pygame.K_DOWN or event.key==ord('s') or event.key==ord('S')):
                 changeto='DOWN'
-            if(event.key==pygame.K_RIGHT or event.key==ord('l') or event.key==ord('L')):
+            if(event.key==event.key==ord('l') or event.key==ord('L')):
                 changeto1='L'
-            if(event.key==pygame.K_LEFT or event.key==ord('j') or event.key==ord('J')):
+            if(event.key==event.key==ord('j') or event.key==ord('J')):
                 changeto1='J'
-            if(event.key==pygame.K_UP or event.key==ord('i') or event.key==ord('I')):
+            if(event.key==event.key==ord('i') or event.key==ord('I')):
                 changeto1='I'
-            if(event.key==pygame.K_DOWN or event.key==ord('k') or event.key==ord('K')):
+            if(event.key==event.key==ord('k') or event.key==ord('K')):
                 changeto1='K'
             if(event.key==pygame.K_ESCAPE):
                 pygame.event.post(pygame.event.Event(pygame.QUIT))
@@ -178,20 +178,21 @@ while True:
     else:
         snakeBody.pop()
         snakeBody1.insert(0,list(snakePos1))
-    if snakePos1[0]==foodPos1[0] and snakePos1[1]==foodPos1[1]:
+    if snakePos1[0]==foodPos[0] and snakePos1[1]==foodPos[1]:
         pygame.mixer.Sound.play(snakebit_sound)
-        x-=1
+        x+=1
         score+=1
         foodSpawn1=False
 
+    elif snakePos1[0]==foodPos1[0] and snakePos1[1]==foodPos1[1]:
+        pygame.mixer.Sound.play(snakebit_sound)
+        x-=1
+        score+=1
+        foodSpawn2=False
+        
     elif snakePos1[0]==foodPos2[0] and snakePos1[1]==foodPos2[1]:
         pygame.mixer.Sound.play(snakebit_sound)
         score+=2
-        foodSpawn2=False
-        
-    elif snakePos1[0]==foodPos3[0] and snakePos1[1]==foodPos3[1]:
-        pygame.mixer.Sound.play(snakebit_sound)
-        score-=2
         foodSpawn3=False
     elif snakePos1[0]==foodPos3[0] and snakePos1[1]==foodPos3[1]:
         pygame.mixer.Sound.play(snakebit_sound)
