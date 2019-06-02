@@ -26,7 +26,7 @@ snake=pygame.image.load('snake.jpg')
 pygame.display.set_icon(snake)
 
 # Variable for speed
-x=17
+x=20
     
 # Play Surface
 play_surface=pygame.display.set_mode((760,460))
@@ -39,6 +39,7 @@ black=pygame.Color(0,0,0)       #Score
 white=pygame.Color(255,255,255) #Background
 brown=pygame.Color(165,42,42)   #Food
 blue=pygame.Color(0,0,204)      #Background
+yellow=pygame. Color(255,255,0)
 
 # FPS Controller
 fpsController=pygame.time.Clock()
@@ -49,8 +50,10 @@ snakeBody=[[100,50],[90,50],[80,50]]
 
 foodPos=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodPos1=[random.randrange(1,72)*10,random.randrange(1,46)*10]
+foodPos2=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodSpawn=True
 foodSpawn1=True
+foodSpawn2=True
 
 direction = 'RIGHT'
 changeto = direction
@@ -133,6 +136,11 @@ while True:
         x-=1
         score+=1
         foodSpawn1=False
+
+    elif snakePos[0]==foodPos2[0] and snakePos[1]==foodPos2[1]:
+        pygame.mixer.Sound.play(snakebit_sound)
+        score+=2
+        foodSpawn2=False
         
     else:
         snakeBody.pop()
@@ -145,18 +153,24 @@ while True:
     if foodSpawn1 == False:
         foodPos1 = [random.randrange(1,72)*10,random.randrange(1,46)*10]
     foodSpawn1 = True
+
+    if foodSpawn2 == False:
+        foodPos2 = [random.randrange(1,72)*10,random.randrange(1,46)*10]
+    foodSpawn2 = True
    
     #Draw Snake
     play_surface.fill(white)
     for pos in snakeBody:
-        pygame.draw.rect(play_surface,blue, pygame.Rect(pos[0],pos[1],10,10))
+        pygame.draw.rect(play_surface,red, pygame.Rect(pos[0],pos[1],10,10))
         
     # Draw Food
-    pygame.draw.rect(play_surface,red, pygame.Rect(foodPos[0],foodPos[1],10,10))
+    pygame.draw.rect(play_surface,yellow, pygame.Rect(foodPos[0],foodPos[1],10,10))
          
     # Draw Food
     pygame.draw.rect(play_surface,green, pygame.Rect(foodPos1[0],foodPos1[1],10,10))
-    
+
+    # Draw Food
+    pygame.draw.rect(play_surface,black, pygame.Rect(foodPos2[0],foodPos2[1],10,10))
     
     
     
@@ -184,4 +198,6 @@ while True:
     showScore()
     pygame.display.flip()
     fpsController.tick(x)
+
+
     
