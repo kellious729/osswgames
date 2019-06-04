@@ -1,6 +1,6 @@
-# Snake Game
+#Snake Game
 # Import Statements
-import pygame,time,random,sys
+import pygame,time,random,sys,threading
 
 # Pygame initialisation
 check_error=pygame.init()
@@ -16,10 +16,10 @@ else:
 crash_sound=pygame.mixer.Sound("Collision.wav")
 snakebit_sound=pygame.mixer.Sound('snakehiss2.wav')
 gameover_sound=pygame.mixer.Sound('gameover.wav')
-
+pygame.mixer.music.load('asd.mp3')
 
 #Background music
-
+pygame.mixer.music.play(-1)
 
 # Game Icon
 snake=pygame.image.load('snake.jpg')
@@ -27,7 +27,7 @@ pygame.display.set_icon(snake)
 
 # Variable for speed
 x=20
-    
+
 # Play Surface
 play_surface=pygame.display.set_mode((760,460))
 pygame.display.set_caption('Snake Game!')
@@ -56,15 +56,22 @@ foodPos=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodPos1=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodPos2=[random.randrange(1,72)*10,random.randrange(1,46)*10]
 foodPos3=[random.randrange(1,72)*10,random.randrange(1,46)*10]
+
 foodSpawn=True
 foodSpawn1=True
 foodSpawn2=True
 foodSpawn3=True
+
 direction = 'RIGHT'
 changeto = direction
+
 direction1 = 'J'
 changeto1 = direction1
+
 score=0
+score1=0
+
+
 
 #Game Over function
 def gameOver():
@@ -76,6 +83,7 @@ def gameOver():
     goReact.midtop=(370,15)
     play_surface.blit(goSurface,goReact)
     showScore(0)
+    showScore1(0)
     pygame.display.flip()
     time.sleep(4)
     pygame.quit()    #pygame Exit
@@ -83,15 +91,24 @@ def gameOver():
     
 def showScore(choice=1):
     sFont=pygame.font.SysFont('monospace',30)
-    sSurface=sFont.render('Score:'+str(score),True,black)
+    sSurface=sFont.render('R Score:'+str(score),True,black)
     sReact=sSurface.get_rect()
     if choice==1:
-        sReact.midtop=(80,10)
+        sReact.midtop=(110,10)
     else:
-        sReact.midtop=(360,100)
+        sReact.midtop=(210,100)
     play_surface.blit(sSurface,sReact)
-    
-    
+
+def showScore1(choice1=1):
+    sFont1=pygame.font.SysFont('monospace',30)
+    sSurface1=sFont1.render('B Score:'+str(score1),True,black)
+    sReact1=sSurface1.get_rect()
+    if choice1==1:
+        sReact1.midtop=(650,10)
+    else:
+        sReact1.midtop=(500,100)
+    play_surface.blit(sSurface1,sReact1)
+
 # Main Logic
 while True:
     for event in pygame.event.get():
@@ -126,13 +143,13 @@ while True:
         direction='UP'
     if changeto=='DOWN' and not direction=='UP':
         direction='DOWN'
-    if changeto1=='L' and not direction=='J':
+    if changeto1=='L' and not direction1=='J':
         direction1='L'
-    if changeto1=='J' and not direction=='L':
+    if changeto1=='J' and not direction1=='L':
         direction1='J'
-    if changeto1=='I' and not direction=='K':
+    if changeto1=='I' and not direction1=='K':
         direction1='I'
-    if changeto1=='K' and not direction=='I':
+    if changeto1=='K' and not direction1=='I':
         direction1='K'
     
     # Update Snake Position
@@ -163,18 +180,21 @@ while True:
 
     elif snakePos[0]==foodPos1[0] and snakePos[1]==foodPos1[1]:
         pygame.mixer.Sound.play(snakebit_sound)
-        x-=1
-        score+=1
+        x+=1
+        score+=2
         foodSpawn1=False
 
     elif snakePos[0]==foodPos2[0] and snakePos[1]==foodPos2[1]:
         pygame.mixer.Sound.play(snakebit_sound)
-        score+=2
+        x+=2
+        score+=1
+        score1-=1
         foodSpawn2=False
         
     elif snakePos[0]==foodPos3[0] and snakePos[1]==foodPos3[1]:
         pygame.mixer.Sound.play(snakebit_sound)
-        score-=2
+        x+=2
+        score1-=3
         foodSpawn3=False
     else:
         snakeBody.pop()
@@ -183,22 +203,25 @@ while True:
     if snakePos1[0]==foodPos[0] and snakePos1[1]==foodPos[1]:
         pygame.mixer.Sound.play(snakebit_sound)
         x+=1
-        score+=1
-        foodSpawn1=False
+        score1+=1
+        foodSpawn=False
 
     elif snakePos1[0]==foodPos1[0] and snakePos1[1]==foodPos1[1]:
         pygame.mixer.Sound.play(snakebit_sound)
-        x-=1
-        score+=1
-        foodSpawn2=False
+        x+=1
+        score1+=2
+        foodSpawn1=False
         
     elif snakePos1[0]==foodPos2[0] and snakePos1[1]==foodPos2[1]:
         pygame.mixer.Sound.play(snakebit_sound)
-        score+=2
-        foodSpawn3=False
+        x+=2
+        score1+=1
+        score-=1
+        foodSpawn2=False
     elif snakePos1[0]==foodPos3[0] and snakePos1[1]==foodPos3[1]:
         pygame.mixer.Sound.play(snakebit_sound)
-        score-=2
+        x+=2
+        score-=3
         foodSpawn3=False 
     else:
         snakeBody1.pop()
@@ -240,7 +263,6 @@ while True:
     pygame.draw.rect(play_surface,purple, pygame.Rect(foodPos3[0],foodPos3[1],10,10))
     
     
-    
     # Boundry
     if snakePos[0]>750 or snakePos[0]<0:
         pygame.mixer.music.stop()
@@ -275,8 +297,34 @@ while True:
             pygame.mixer.Sound.play(crash_sound)
             time.sleep(1)
             gameOver()
+            
+    for block in snakeBody1[1:]:
+            if snakePos[0]==block[0] and snakePos[1]==block[1]:
+                pygame.mixer.music.stop()
+                pygame.mixer.Sound.play(crash_sound)
+                time.sleep(1)
+                gameOver()
+                if snakePos1[0]==block[0] and snakePos1[1]==block[1]:
+                    pygame.mixer.music.stop()
+                    pygame.mixer.Sound.play(crash_sound)
+                    time.sleep(1)
+                    gameOver()
+                    for block in snakePos[1:]:
+                        if snakePos1[0]==block[0] and snakePos1[1]==block[1]:
+                            pygame.mixer.music.stop()
+                            pygame.mixer.Sound.play(crash_sound)
+                            time.sleep(1)
+                            gameOver()
+                            for block in snakePos1[1:]:
+                                if snakePos[0]==block[0] and snakePos[1]==block[1]:
+                                    pygame.mixer.music.stop()
+                                    pygame.mixer.Sound.play(crash_sound)
+                                    time.sleep(1)
+                                    gameOver()
 
-    
+
     showScore()
+    showScore1()
     pygame.display.flip()
     fpsController.tick(x)
+
